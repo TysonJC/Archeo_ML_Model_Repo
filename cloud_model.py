@@ -1,10 +1,14 @@
 import numpy as np
 import pandas as pd
 import joblib
+import __main__
 from pathlib import Path
 
+from gbdt_model_renewed import PXRFMaterialCLassifier
 
-# These are the pXRF features your current classifier uses
+#For compatibility when saving the model
+__main__.PXRFMaterialClassifier = PXRFMaterialClassifier
+
 FEATURE_COLUMNS = [
     "Ag","Al","As","Au","Ca","Cr",
     "Cu","Fe","K","Mg","Mn","Ni",
