@@ -20,7 +20,7 @@ async def predict(file: UploadFile = File(...)):
 
     df = pd.read_csv(io.BytesIO(contents))
 
-    result_df = run_model(df)
+    result_df = model.predict(df)
 
     output = io.StringIO()
     result_df.to_csv(output, index=False)
@@ -31,5 +31,5 @@ async def predict(file: UploadFile = File(...)):
         media_type="text/csv",
         headers={
             "Content-Disposition":
-            "attachment; filename=archaeosight_results.csv"
+            "attachment; filename=ArchaeoSight_Results.csv"
         })
