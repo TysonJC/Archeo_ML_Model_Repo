@@ -3,10 +3,15 @@ from fastapi.responses import StreamingResponse
 import pandas as pd
 import io
 
-from gbdt_model_renewed import run_model
+from cloud_model import PXRFModel
 
 app = FastAPI()
 
+model = PXRFModel("pxrf_full_model.pkl")
+
+@app.get("/")
+def root():
+    return {"status": "The ArchSight is now running"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
