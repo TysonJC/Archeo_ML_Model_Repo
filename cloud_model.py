@@ -4,7 +4,7 @@ import joblib
 import __main__
 from pathlib import Path
 
-from gbdt_model_renewed import PXRFMaterialCLassifier
+from gbdt_model_renewed import PXRFMaterialClassifier
 
 #For compatibility when saving the model
 __main__.PXRFMaterialClassifier = PXRFMaterialClassifier
