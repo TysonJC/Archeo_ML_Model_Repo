@@ -10,9 +10,9 @@ from gbdt_model_renewed import PXRFMaterialClassifier
 __main__.PXRFMaterialClassifier = PXRFMaterialClassifier
 
 FEATURE_COLUMNS = [
-    "Ag","Al","As","Au","Ca","Cr",
-    "Cu","Fe","K","Mg","Mn","Ni",
-    "P","Pb","Sr","Ti","V","Zn"
+    "Ag","Al","As","Au","Cr",
+    "Cu","Fe","Mg","Mn","Ni",
+    "P","Pb","Ti","V","Zn"
 ]
 
 
