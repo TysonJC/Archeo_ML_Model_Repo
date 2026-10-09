@@ -39,6 +39,28 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     #Ensure the predictions are between 0 and 1
     z = np.clip(z, 0.0, 0.1)
 
+    #Address conflicts with similar coordinates
+
+    origin_points = pd.DataFrame({
+        "x_coord": x,
+        "y_coord": y,
+        "non_soil_probability": z
+    })
+
+    #Multiple samples could be taken at the same area
+    #Within similar coordinates with predictions, we'll take the mean value of those predictions
+    
+    unique_mean_points = (original_points_df.groupby(
+            ["x_coord", "y_coord"],
+            as_index=False
+    )
+        ["non_soil_probability"]
+        .mean()
+    )
+
+    x = unique_mean_points["x_coord"].to_numpy()
+    y = unique_mean_points["y_coord"].to_numpy()
+    z = unique_mean_points["non_soil_probability"].to_numpy()
     
     for _ in range(n_bootstrap):
         # Resample data with replacement
@@ -54,8 +76,6 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
         y_res = y_res[unique_idx]
         z_res = z_res[unique_idx]
     
-        if len(x_res) < 15:
-            continue
         
         try:
             OK = OrdinaryKriging(
