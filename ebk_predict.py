@@ -61,6 +61,15 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     x = unique_mean_points["x_coord"].to_numpy()
     y = unique_mean_points["y_coord"].to_numpy()
     z = unique_mean_points["non_soil_probability"].to_numpy()
+
+    #Establish the grid
+
+    x_grid = np.linspace(np.min(x),np.max(x),grid_size)
+    y_grid = np.linspace(np.min(y),np.max(y),grid_size)
+
+    rng = np.random.default_rng(random_state)
+
+    predictions = []
     
     for _ in range(n_bootstrap):
         # Resample data with replacement
@@ -75,7 +84,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
         x_res = x_res[unique_idx]
         y_res = y_res[unique_idx]
         z_res = z_res[unique_idx]
-    
+
         
         try:
             OK = OrdinaryKriging(
