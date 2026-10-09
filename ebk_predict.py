@@ -103,24 +103,47 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
 
         if len(x_res) < min_points:
             continue
+
+        #Select different Variogram models each run
+        variogram_model = str(
+            rng.choice(variogram_models))
         
         try:
-            OK = OrdinaryKriging(
-                x_res, y_res, z_res,
+            kriging_model = OrdinaryKriging(
+                x_res,
+                y_res,
+                z_res,
                 variogram_model=variogram_model,
-                variogram_parameters={'nugget': 0.01, 'sill': 0.5, 'range': 50.0},
                 verbose=False,
                 enable_plotting=False
             )
-            z_pred, _ = OK.execute('grid', grid_x, grid_y)
-            predictions.append(z_pred)
-    
+
+            z_pred, variance = kriging_model.execute(
+                "grid",
+                grid_x,
+                grid_y
+            )
+
+            z_pred = np.asarray(
+                np.ma.filled(z_pred, np.nan),
+                dtype=float
+            )
+
             # Reject bad predictions BEFORE storing
             if z_pred is None or np.isnan(z_pred).all():
                 continue
     
             if np.any(np.abs(z_pred) > 1e6):
                 continue
+
+            # Probability cannot logically exceed 0-1
+            z_pred = np.clip(
+                z_pred,
+                0.0,
+                1.0
+            )
+
+            predictions.append(z_pred)
     
         except Exception as e:
             print(f"Skipped iteration due to error: {e}")
