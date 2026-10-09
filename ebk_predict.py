@@ -70,21 +70,39 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     rng = np.random.default_rng(random_state)
 
     predictions = []
-    
-    for _ in range(n_bootstrap):
-        # Resample data with replacement
-        x_res, y_res, z_res = resample(x, y, z)
-        
-        # Fit kriging model with random variogram parameters
-        variogram_model = np.random.choice(['spherical', 'exponential'])
-    
-        coords = np.column_stack((x_res, y_res))
-        _, unique_idx = np.unique(coords, axis=0, return_index=True)
-    
-        x_res = x_res[unique_idx]
-        y_res = y_res[unique_idx]
-        z_res = z_res[unique_idx]
 
+    variogram_model = ['spherical', 'exponential', 'gaussian'])
+    
+    for num_runs in range(n_bootstrap):
+        # Get the sample of the original point
+        origin_p = rng.integers(0,len(x),size=len(x))
+        
+        x_res = x_res[origin_p]
+        y_res = y_res[origin_p]
+        z_res = z_res[origin_p]
+
+        #Remove duplicates from the bootstrap
+
+        grid_resampled = pd.DataFrame({
+            'x': x_res,
+            'y': y_res,
+            'z': z_res
+        })
+
+        resampled_points = (grid_resampled.groupby(
+            ["x", "y"],
+            as_index=False
+        )
+        ["z"]
+        .mean()
+        )
+
+        x_res = resampled_points["x"].to_numpy()
+        y_res = resampled_points["y"].to_numpy()
+        z_res = resampled_points["z"].to_numpy()
+
+        if len(x_res) < min_points:
+            continue
         
         try:
             OK = OrdinaryKriging(
