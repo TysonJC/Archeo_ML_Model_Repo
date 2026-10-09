@@ -3,19 +3,21 @@ import pandas as pd
 from pykrige.ok import OrdinaryKriging
 from sklearn.utils import resample
 
-# Example: Generate synthetic spatial data
-np.random.seed(42)
-n_points = 50
-x = np.random.uniform(0, 100, n_points)
-y = np.random.uniform(0, 100, n_points)
-z_raw = np.sin(x / 10) + np.cos(y / 10) + np.random.normal(0, 0.1, n_points)
-z = (z_raw - np.min(z_raw)) / (np.max(z_raw) - np.min(z_raw))
+# # Example: Generate synthetic spatial data
+# np.random.seed(42)
+# n_points = 50
+# x = np.random.uniform(0, 100, n_points)
+# y = np.random.uniform(0, 100, n_points)
+# z_raw = np.sin(x / 10) + np.cos(y / 10) + np.random.normal(0, 0.1, n_points)
+# z = (z_raw - np.min(z_raw)) / (np.max(z_raw) - np.min(z_raw))
 
-# Define grid for interpolation
-grid_x = np.linspace(0, 100, 50)
-grid_y = np.linspace(0, 100, 50)
+# # Define grid for interpolation
+# grid_x = np.linspace(0, 100, 50)
+# grid_y = np.linspace(0, 100, 50)
 
-mask = np.zeros((len(grid_y), len(grid_x)))
+# mask = np.zeros((len(grid_y), len(grid_x)))
+
+def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=42):
 
 # Bootstrapping variogram parameters (EBK-like)
 n_bootstrap = 30
