@@ -34,7 +34,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
 
     x = x[valid_mask]
     y = y[valid_mask]
-    z = z[valid_mask}
+    z = z[valid_mask]
 
     #Ensure the predictions are between 0 and 1
     z = np.clip(z, 0.0, 0.1)
