@@ -203,7 +203,7 @@ def dataframe_to_grid(dataframe, x_col, y_col, prob_col):
 
     if missing_columns:
         raise ValueError(
-            "EBK requires these missing columns: "+ ", ".join(missing_columns)
+            "EBK requires these missing columns: "+ ", ".join(missing_columns))
 
     return run_ebk(
         x=dataframef[x_col],
