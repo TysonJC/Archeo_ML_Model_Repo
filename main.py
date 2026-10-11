@@ -23,8 +23,12 @@ async def predict(file: UploadFile = File(...)):
 
     result_df = model.predict(df)
 
-    ebk_grid_df, original_points_df = (
-    dataframe_to_grid(result_df))
+    ebk_grid_df, original_points_df =
+    dataframe_to_grid(
+        result_df,
+        x_column="X_Coord",
+        y_column="Y_Coord",
+        z_column="non_soil_probability")
 
     output = io.StringIO()
     result_df.to_csv(output, index=False)
