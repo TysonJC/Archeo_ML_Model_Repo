@@ -23,8 +23,7 @@ async def predict(file: UploadFile = File(...)):
 
     result_df = model.predict(df)
 
-    ebk_grid_df, original_points_df =
-    dataframe_to_grid(
+    ebk_grid_df, original_points_df = dataframe_to_grid(
         result_df,
         x_column="X_Coord",
         y_column="Y_Coord",
