@@ -71,7 +71,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
 
     predictions = []
 
-    variogram_model = ['spherical', 'exponential', 'gaussian'])
+    variogram_model = ['spherical', 'exponential', 'gaussian']
     
     for num_runs in range(n_bootstrap):
         # Get the sample of the original point
