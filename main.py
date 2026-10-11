@@ -24,7 +24,7 @@ async def predict(file: UploadFile = File(...)):
     result_df = model.predict(df)
 
     ebk_grid_df, original_points_df = (
-    run_ebk_from_dataframe(result_df))
+    dataframe_to_grid(result_df))
 
     output = io.StringIO()
     result_df.to_csv(output, index=False)
