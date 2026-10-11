@@ -4,6 +4,7 @@ import pandas as pd
 import io
 
 from cloud_model import PXRFModel
+from ebk_predict import dataframe_to_grid
 
 app = FastAPI()
 
@@ -21,6 +22,9 @@ async def predict(file: UploadFile = File(...)):
     df = pd.read_csv(io.BytesIO(contents))
 
     result_df = model.predict(df)
+
+    ebk_grid_df, original_points_df = (
+    run_ebk_from_dataframe(result_df))
 
     output = io.StringIO()
     result_df.to_csv(output, index=False)
