@@ -147,20 +147,45 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     
         except Exception as e:
             print(f"Skipped iteration due to error: {e}")
+
+
+    #Check if one model appears
     
-    # Mark original data points on grid
-    for xi, yi in zip(x, y):
-        # Find closest grid index
-        ix = np.argmin(np.abs(grid_x - xi))
-        iy = np.argmin(np.abs(grid_y - yi))
-        
-        mask[iy, ix] = 1
-    
+    if len(predictions) == 0:
+        raise RuntimeError("All EBK interpolation attempts failed.")
+
+
     # Combine predictions (mean of bootstraps)
     predictions = np.array(predictions)
     z_mean = np.nanmean(predictions, axis=0)
     z_mean = np.nan_to_num(z_mean, nan=0.0, posinf=0.0, neginf=0.0)
-    z_std = np.nanstd(predictions, axis=0)  # Uncertainty estimate
+    z_mean = np.clip(mean_grid,0.0,1.0)
+    z_uncertain = np.nanstd(predictions, axis=0)  # Uncertainty estimate
+    
+    
+    # # Mark original data points on grid
+    # for xi, yi in zip(x, y):
+    #     # Find closest grid index
+    #     ix = np.argmin(np.abs(grid_x - xi))
+    #     iy = np.argmin(np.abs(grid_y - yi))
+        
+    #     mask[iy, ix] = 1
+
+    #TODO: Convert to a set grid (30 x 30)
+
+    x_grid_mesh, y_grid_mesh = np.meshgrid(x_grid,y_grid)
+
+    grid_display = pd.DataFrame({
+        "x_coord": grid_x_mesh.flatten(),
+        "y_coord": grid_y_mesh.flatten(),
+        "ebk_probability": mean_grid.flatten(),
+        "ebk_uncertainty": uncertainty_grid.flatten()
+    })
+
+    print("EBK completed")
+    
+    return grid_display, origin_points
+
     
     
     # Save results
