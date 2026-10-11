@@ -186,11 +186,37 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     
     return grid_display, origin_points
 
+    #TODO: Helper Function to be used in main.py
+    #Will take the dataframe to produce the grid
+
+def dataframe_to_grid(dataframe, x_col, y_col, prob_col):
     
+    req_columns = [x_column,y_column,value_column]
+
+    #Check if any columns are missing
+
+    missing_columns = [
+        column
+        for column in req_columns
+        if column not in dataframe.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            "EBK requires these missing columns: "+ ", ".join(missing_columns)
+
+    return run_ebk(
+        x=dataframef[x_col],
+        y=dataframe[y_col],
+        z=dataframe[prob_column],
+        grid_size=30,
+        n_bootstrap=30
+    )
+
     
-    # Save results
-    pd.DataFrame(z_mean).to_csv("ebk_mean_prediction.csv", index=False)
-    pd.DataFrame(z_std).to_csv("ebk_prediction_uncertainty.csv", index=False)
-    pd.DataFrame(mask).to_csv("ebk_original_points_mask.csv", index=False)
-    print("EBK-like interpolation complete. Results saved.")
+# # Save results
+#     pd.DataFrame(z_mean).to_csv("ebk_mean_prediction.csv", index=False)
+#     pd.DataFrame(z_std).to_csv("ebk_prediction_uncertainty.csv", index=False)
+#     pd.DataFrame(mask).to_csv("ebk_original_points_mask.csv", index=False)
+#     print("EBK-like interpolation complete. Results saved.")
     
