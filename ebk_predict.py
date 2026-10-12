@@ -206,7 +206,7 @@ def dataframe_to_grid(dataframe, x_col, y_col, prob_col):
             "EBK requires these missing columns: "+ ", ".join(missing_columns))
 
     return run_ebk(
-        x=dataframef[x_col],
+        x=dataframe[x_col],
         y=dataframe[y_col],
         z=dataframe[prob_col],
         grid_size=30,
