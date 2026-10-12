@@ -191,7 +191,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
 
 def dataframe_to_grid(dataframe, x_col, y_col, prob_col):
     
-    req_columns = [x_column,y_column,value_column]
+    req_columns = [x_col,y_col,prob_col]
 
     #Check if any columns are missing
 
@@ -208,7 +208,7 @@ def dataframe_to_grid(dataframe, x_col, y_col, prob_col):
     return run_ebk(
         x=dataframef[x_col],
         y=dataframe[y_col],
-        z=dataframe[prob_column],
+        z=dataframe[prob_col],
         grid_size=30,
         n_bootstrap=30
     )
