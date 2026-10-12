@@ -50,7 +50,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     #Multiple samples could be taken at the same area
     #Within similar coordinates with predictions, we'll take the mean value of those predictions
     
-    unique_mean_points = (origin_points_df.groupby(
+    unique_mean_points = (origin_points.groupby(
             ["x_coord", "y_coord"],
             as_index=False
     )
