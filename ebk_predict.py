@@ -74,8 +74,12 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     variogram_models = ['spherical', 'exponential', 'gaussian']
     
     for num_runs in range(n_bootstrap):
+
+        #Set sample size
+        sample_size = min(len(x),500)
+        
         # Get the sample of the original point
-        origin_p = rng.integers(0,len(x),size=len(x))
+        origin_p = rng.integers(0,len(x),sample_size)
         
         x_res = x[origin_p]
         y_res = y[origin_p]
@@ -159,7 +163,7 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     predictions = np.array(predictions)
     z_mean = np.nanmean(predictions, axis=0)
     z_mean = np.nan_to_num(z_mean, nan=0.0, posinf=1.0, neginf=0.0)
-    z_mean = np.clip(mean_grid,0.0,1.0)
+    z_mean = np.clip(z_mean,0.0,1.0)
     z_uncertain = np.nanstd(predictions, axis=0)  # Uncertainty estimate
     z_uncertain = np.nan_to_num(
         z_uncertain,
@@ -185,8 +189,8 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     grid_display = pd.DataFrame({
         "x_coord": grid_x_mesh.flatten(),
         "y_coord": grid_y_mesh.flatten(),
-        "ebk_probability": mean_grid.flatten(),
-        "ebk_uncertainty": uncertainty_grid.flatten()
+        "ebk_probability": z_mean.flatten(),
+        "ebk_uncertainty": z_uncertain.flatten()
     })
 
     print("EBK completed")
