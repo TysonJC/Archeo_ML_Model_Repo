@@ -40,3 +40,40 @@ async def predict(file: UploadFile = File(...)):
             "Content-Disposition":
             "attachment; filename=ArchaeoSight_Results.csv"
         })
+#Request for the EBK file
+@app.post("/ebk")
+async def ebk(file: UploadFile = File(...)):
+
+    contents = await file.read()
+
+    df = pd.read_csv(
+        io.BytesIO(contents)
+    )
+
+    # The EBK process needs the classifier probability first
+    result_df = model.predict(df)
+
+    ebk_grid_df, original_points_df = dataframe_to_grid(
+        result_df,
+        x_col="X_Coord",
+        y_col="Y_Coord",
+        prob_col="non_soil_probability"
+    )
+
+    output = io.StringIO()
+
+    ebk_grid_df.to_csv(
+        output,
+        index=False
+    )
+
+    output.seek(0)
+
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={
+            "Content-Disposition":
+            "attachment; filename=ArchaeoSight_EBK_Grid.csv"
+        }
+    )
