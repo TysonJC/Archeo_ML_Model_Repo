@@ -120,8 +120,8 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
 
             z_pred, variance = kriging_model.execute(
                 "grid",
-                grid_x,
-                grid_y
+                x_grid,
+                y_grid
             )
 
             z_pred = np.asarray(
