@@ -187,8 +187,8 @@ def run_ebk(x, y, z, grid_size=30, n_bootstrap=30, min_points=10, random_state=4
     x_grid_mesh, y_grid_mesh = np.meshgrid(x_grid,y_grid)
 
     grid_display = pd.DataFrame({
-        "x_coord": grid_x_mesh.flatten(),
-        "y_coord": grid_y_mesh.flatten(),
+        "x_coord": x_grid__mesh.flatten(),
+        "y_coord": y_grid_mesh.flatten(),
         "ebk_probability": z_mean.flatten(),
         "ebk_uncertainty": z_uncertain.flatten()
     })
