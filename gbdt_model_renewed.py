@@ -186,7 +186,8 @@ class PXRFMaterialClassifier:
         cm = confusion_matrix(y_test, y_pred, labels=unique_labels)
         
         print("\nCONFUSION MATRIX:")
-        print(f"{'Actual \\ Predicted':<15}", end="")
+        header = "Actual \\ Predicted"
+        print(f"{header:<15}", end="")
         for label in unique_labels:
             print(f"{label:<10}", end="")
         print()
